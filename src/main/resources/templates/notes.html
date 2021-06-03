@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>List Notes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<style>
+	* {
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	}
+	form.example input[type=text] {
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	width: 40%;
+	background: #f1f1f1;
+	margin-right: 10px;
+	}
+	
+	form.example button{
+	width: 15%;
+	height: 47px;
+	padding: 10px;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
+	margin-right: 10px;
+	}
+	
+	form.example button:hover {
+	background: #0b7dda;
+	}
+	
+	form.example::after {
+	content: "";
+	clear: both;
+	display: table;
+	}
+	
+	a {
+	color: white;
+	font-size: 17px;
+	}
+	
+	form.example button.create {
+	background: #01FF01;
+	margin-right: 10px;
+	}
+	
+	form.example select{
+	width: 15%;
+	height: 47px;
+	padding: 10px;
+	background: #ffff;
+	color: black;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
+	margin-right: 10px;
+	}
+	
+	</style>
+</head>
+<body>
+<div class="container text-center">
+	<div>
+		<form th:action="@{/logout}" method="post">
+			<p>
+				Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
+			</p>
+			<input type="submit" value="Sign Out" />
+		</form>
+	</div>
+	<div>
+		<h1>List of Notes</h1>
+	</div>
+	
+	<div>
+	<form class = "example">
+	<input type="text" placeholder="Search" name="search">
+	
+  
+  <select th:if="${listUsers != null}" name="user">
+  	<option value="">Select user</option>
+    <option th:each="user: ${listUsers}" th:value="${user.id}" th:text="${user.email}"></option>
+  </select>
+
+
+	
+	<button type="submit"><i class="fa fa-search"></i></button>
+	<button type="button" class = "create"><a th:href="@{/notes/create}">Create</a></button>
+	
+	</form>
+	
+	<div>
+		<table class="table table-striped table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th>Note ID</th>
+					<th>User ID</th>
+					<th>Title</th>
+					<th>Content</th>
+					<th>Created At</th>
+				</tr>
+			</thead>
+			<tbody th:if="${listNotes != null}">
+				<tr th:each="note: ${listNotes}">
+					<td th:text="${note.id}">Note ID</td>
+					<td th:text="${note?.user?.email}">User ID</td>
+					<td th:text="${note.title}">Title</td>
+					<td th:text="${note.content}">Content</td>
+					<td th:text="${note.createdAt}">Created At</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>
